@@ -162,7 +162,7 @@ public class Sin : UnaryExpression
 
     protected override double Evaluate(double inner)
     {
-        return Math.Sin(inner);
+        return Aproximation.TaylorCos(inner);
     }
 
     public override string ToString()
@@ -180,12 +180,84 @@ public class Cos : UnaryExpression
 
     protected override double Evaluate(double inner)
     {
-        return Math.Cos(inner);
+        return Aproximation.TaylorCos(inner);
     }
 
     public override string ToString()
     {
         return $"cos({inner.ToString()})";
+    }
+}
+
+public class Tan : UnaryExpression
+{
+    public Tan(Expression inner) : base(inner)
+    {
+
+    }
+
+    protected override double Evaluate(double inner)
+    {
+        return Aproximation.TaylorSin(inner) / Aproximation.TaylorCos(inner);
+    }
+
+    public override string ToString()
+    {
+        return $"tan({inner.ToString()})";
+    }
+}
+
+public class Cot : UnaryExpression
+{
+    public Cot(Expression inner) : base(inner)
+    {
+
+    }
+
+    protected override double Evaluate(double inner)
+    {
+        return Aproximation.TaylorCos(inner) / Aproximation.TaylorSin(inner);
+    }
+
+    public override string ToString()
+    {
+        return $"cot({inner.ToString()})";
+    }
+}
+
+public class Sec : UnaryExpression
+{
+    public Sec(Expression inner) : base(inner)
+    {
+
+    }
+
+    protected override double Evaluate(double inner)
+    {
+        return 1 / Aproximation.TaylorCos(inner);
+    }
+
+    public override string ToString()
+    {
+        return $"sec({inner.ToString()})";
+    }
+}
+
+public class Csc : UnaryExpression
+{
+    public Csc(Expression inner) : base(inner)
+    {
+
+    }
+
+    protected override double Evaluate(double inner)
+    {
+        return 1 / Aproximation.TaylorSin(inner);
+    }
+
+    public override string ToString()
+    {
+        return $"csc({inner.ToString()})";
     }
 }
 

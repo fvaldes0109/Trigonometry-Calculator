@@ -4,4 +4,6 @@
 
 // System.Console.WriteLine(exp.Evaluate());
 // System.Console.WriteLine(Aproximation.TaylorCos(2));
-System.Console.WriteLine(Aproximation.TaylorSin(Math.PI));
+// System.Console.WriteLine(Aproximation.TaylorSin(Math.PI));
+
+System.Console.WriteLine(new Csc(new Constant(1)).Evaluate());
