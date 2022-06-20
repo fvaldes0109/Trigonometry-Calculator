@@ -2,7 +2,7 @@
 
 public abstract class Expression
 {
-    public abstract double Evaluate();
+    public abstract double Evaluate(double error);
 }
 
 public abstract class BinaryExpression : Expression
@@ -16,10 +16,10 @@ public abstract class BinaryExpression : Expression
         this.right = right;
     }
 
-    public override double Evaluate()
+    public override double Evaluate(double error)
     {
-        double leftValue = this.left.Evaluate();
-        double rightValue = this.right.Evaluate();
+        double leftValue = this.left.Evaluate(error);
+        double rightValue = this.right.Evaluate(error);
 
         return this.Evaluate(leftValue, rightValue);
     }
@@ -127,30 +127,12 @@ public abstract class UnaryExpression : Expression
         this.inner = inner;
     }
 
-    public override double Evaluate()
+    public override double Evaluate(double error)
     {
-        return this.Evaluate(this.inner.Evaluate());
+        return this.Evaluate(this.inner.Evaluate(error), error);
     }
 
-    protected abstract double Evaluate(double inner);
-}
-
-public class Exp : UnaryExpression
-{
-    public Exp(Expression inner) : base(inner)
-    {
-
-    }
-
-    protected override double Evaluate(double inner)
-    {
-        return Math.Exp(inner);
-    }
-
-    public override string ToString()
-    {
-        return $"e^({inner.ToString()})";
-    }
+    protected abstract double Evaluate(double inner, double error);
 }
 
 public class Sin : UnaryExpression
@@ -160,9 +142,9 @@ public class Sin : UnaryExpression
 
     }
 
-    protected override double Evaluate(double inner)
+    protected override double Evaluate(double inner, double error)
     {
-        return Aproximation.TaylorCos(inner);
+        return Aproximation.TaylorSin(inner, error);
     }
 
     public override string ToString()
@@ -178,9 +160,9 @@ public class Cos : UnaryExpression
 
     }
 
-    protected override double Evaluate(double inner)
+    protected override double Evaluate(double inner, double error)
     {
-        return Aproximation.TaylorCos(inner);
+        return Aproximation.TaylorCos(inner, error);
     }
 
     public override string ToString()
@@ -196,9 +178,9 @@ public class Tan : UnaryExpression
 
     }
 
-    protected override double Evaluate(double inner)
+    protected override double Evaluate(double inner, double error)
     {
-        return Aproximation.TaylorSin(inner) / Aproximation.TaylorCos(inner);
+        return Aproximation.TaylorSin(inner, error) / Aproximation.TaylorCos(inner, error);
     }
 
     public override string ToString()
@@ -214,9 +196,9 @@ public class Cot : UnaryExpression
 
     }
 
-    protected override double Evaluate(double inner)
+    protected override double Evaluate(double inner, double error)
     {
-        return Aproximation.TaylorCos(inner) / Aproximation.TaylorSin(inner);
+        return Aproximation.TaylorCos(inner, error) / Aproximation.TaylorSin(inner, error);
     }
 
     public override string ToString()
@@ -232,9 +214,9 @@ public class Sec : UnaryExpression
 
     }
 
-    protected override double Evaluate(double inner)
+    protected override double Evaluate(double inner, double error)
     {
-        return 1 / Aproximation.TaylorCos(inner);
+        return 1 / Aproximation.TaylorCos(inner, error);
     }
 
     public override string ToString()
@@ -250,9 +232,9 @@ public class Csc : UnaryExpression
 
     }
 
-    protected override double Evaluate(double inner)
+    protected override double Evaluate(double inner, double error)
     {
-        return 1 / Aproximation.TaylorSin(inner);
+        return 1 / Aproximation.TaylorSin(inner, error);
     }
 
     public override string ToString()
@@ -275,7 +257,7 @@ public class Constant : Expression
         return value.ToString();
     }
 
-    public override double Evaluate()
+    public override double Evaluate(double error)
     {
         return this.value;
     }

@@ -2,7 +2,7 @@ namespace Calculator;
 
 public static class Aproximation {
 
-    public static double TaylorCos(double x) {
+    public static double TaylorCos(double x, double error) {
 
         while(x > Math.PI * 2) {
             x -= Math.PI * 2;
@@ -20,6 +20,7 @@ public static class Aproximation {
 
             result += (1 - 2 * (i % 2)) * xPower / factorial;
             System.Console.WriteLine($"{i}: {result} --- {factorial}");
+
             xPower *= x * x;
             factorial *= (2 * i + 1) * (2 * i + 2);
         }
@@ -27,7 +28,7 @@ public static class Aproximation {
         return result;
     }
 
-        public static double TaylorSin(double x) {
+        public static double TaylorSin(double x, double error) {
 
         while(x > Math.PI * 2) {
             x -= Math.PI * 2;
@@ -45,6 +46,7 @@ public static class Aproximation {
 
             result += (-1 + 2 * (i % 2)) * xPower / factorial;
             System.Console.WriteLine($"{i}: {result} --- {factorial}");
+
             xPower *= x * x;
             factorial *= (2 * i) * (2 * i + 1);
         }
