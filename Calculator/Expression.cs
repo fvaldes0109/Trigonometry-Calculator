@@ -144,7 +144,7 @@ public class Sin : UnaryExpression
 
     protected override double Evaluate(double inner, double error)
     {
-        return Aproximation.TaylorSin(inner, error);
+        return Aproximation.MacLaurinSin(inner, error);
     }
 
     public override string ToString()
@@ -162,7 +162,7 @@ public class Cos : UnaryExpression
 
     protected override double Evaluate(double inner, double error)
     {
-        return Aproximation.TaylorCos(inner, error);
+        return Aproximation.MacLaurinCos(inner, error);
     }
 
     public override string ToString()
@@ -180,7 +180,7 @@ public class Tan : UnaryExpression
 
     protected override double Evaluate(double inner, double error)
     {
-        return Aproximation.TaylorSin(inner, error) / Aproximation.TaylorCos(inner, error);
+        return Aproximation.MacLaurinSin(inner, error) / Aproximation.MacLaurinCos(inner, error);
     }
 
     public override string ToString()
@@ -198,7 +198,7 @@ public class Cot : UnaryExpression
 
     protected override double Evaluate(double inner, double error)
     {
-        return Aproximation.TaylorCos(inner, error) / Aproximation.TaylorSin(inner, error);
+        return Aproximation.MacLaurinCos(inner, error) / Aproximation.MacLaurinSin(inner, error);
     }
 
     public override string ToString()
@@ -216,7 +216,7 @@ public class Sec : UnaryExpression
 
     protected override double Evaluate(double inner, double error)
     {
-        return 1 / Aproximation.TaylorCos(inner, error);
+        return 1 / Aproximation.MacLaurinCos(inner, error);
     }
 
     public override string ToString()
@@ -234,12 +234,123 @@ public class Csc : UnaryExpression
 
     protected override double Evaluate(double inner, double error)
     {
-        return 1 / Aproximation.TaylorSin(inner, error);
+        return 1 / Aproximation.MacLaurinSin(inner, error);
     }
 
     public override string ToString()
     {
         return $"csc({inner.ToString()})";
+    }
+}
+
+public class Arcsin : UnaryExpression
+{
+    public Arcsin(Expression inner) : base(inner)
+    {
+
+    }
+
+    protected override double Evaluate(double inner, double error)
+    {   
+        if (inner > 1 || inner < -1) throw new ArgumentException("Domain error: The x of arcsin(x) must be between [-1, 1]");
+        return Aproximation.MacLaurinArcsin(inner, error);
+    }
+
+    public override string ToString()
+    {
+        return $"arcsin({inner.ToString()})";
+    }
+}
+public class Arccos : UnaryExpression
+{
+    public Arccos(Expression inner) : base(inner)
+    {
+
+    }
+
+    protected override double Evaluate(double inner, double error)
+    {   
+        if (inner > 1 || inner < -1) throw new ArgumentException("Domain error: The x of arccos(x) must be between [-1, 1]");
+        return Math.PI / 2 - Aproximation.MacLaurinArcsin(inner, error);
+    }
+
+    public override string ToString()
+    {
+        return $"arccos({inner.ToString()})";
+    }
+}
+
+public class Arctan : UnaryExpression
+{
+    public Arctan(Expression inner) : base(inner)
+    {
+
+    }
+
+    protected override double Evaluate(double inner, double error)
+    {   
+        return Aproximation.MacLaurinArctan(inner, error);
+    }
+
+    public override string ToString()
+    {
+        return $"arctan({inner.ToString()})";
+    }
+}
+
+public class Arccot : UnaryExpression
+{
+    public Arccot(Expression inner) : base(inner)
+    {
+
+    }
+
+    protected override double Evaluate(double inner, double error)
+    {   
+        return Math.PI / 2 - Aproximation.MacLaurinArctan(inner, error);
+    }
+
+    public override string ToString()
+    {
+        return $"arccot({inner.ToString()})";
+    }
+}
+
+public class Arcsec : UnaryExpression
+{
+    public Arcsec(Expression inner) : base(inner)
+    {
+
+    }
+
+    protected override double Evaluate(double inner, double error)
+    {   
+        if (inner < 1 && inner > -1) throw new ArgumentException("Domain error: The x in arcsec(x) must belong to (-inf, -1) U (1, +inf)");
+        return Math.PI / 2 - Aproximation.MacLaurinArcsin(1 / inner, error);
+    }
+
+    public override string ToString()
+    {
+        return $"arcsec({inner.ToString()})";
+    }
+}
+
+public class Arccsc : UnaryExpression
+{
+    public Arccsc(Expression inner) : base(inner)
+    {
+
+    }
+
+    protected override double Evaluate(double inner, double error)
+    {   
+        if (inner < 1 && inner > -1) throw new ArgumentException("Domain error: The x in arcsc(x) must belong to (-inf, -1) U (1, +inf)");
+        return Aproximation.MacLaurinArcsin(1 / inner, error);
+    }
+
+    public override string ToString()
+    {
+        return $"arccsc({inner.ToString()})";
     }
 }
 

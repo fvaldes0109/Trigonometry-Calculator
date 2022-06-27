@@ -7,7 +7,7 @@ public static class Aproximation {
     ///</summary>
     ///<param name ="x">The angle in radians</param>
     ///<param name ="error">The desired aproximation error for the result</param>
-    public static double TaylorCos(double x, double error) {
+    public static double MacLaurinCos(double x, double error) {
 
         x = FromZeroTo2Pi(x); // Moving x to the interval [0, 2pi]
         double finalSign = 1;
@@ -46,7 +46,7 @@ public static class Aproximation {
     ///</summary>
     ///<param name ="x">The angle in radians</param>
     ///<param name ="error">The desired aproximation error for the result</param>
-    public static double TaylorSin(double x, double error) {
+    public static double MacLaurinSin(double x, double error) {
 
         x = FromZeroTo2Pi(x); // Moving x to the interval [0, 2pi]
         double finalSign = 1;
@@ -78,6 +78,60 @@ public static class Aproximation {
         }
 
         return result * finalSign;
+    }
+
+    ///<summary>
+    /// Uses MacLaurin series to calculate the arcsine of x
+    ///</summary>
+    ///<param name ="x">The angle in radians</param>
+    ///<param name ="error">The desired aproximation error for the result</param>
+    public static double MacLaurinArcsin(double x, double error) {
+
+        if (x == 1 || x == -1) return x * Math.PI / 2;
+
+        double result = 0;
+        double factorial2n = 1;
+        double factorialn = 1;
+        double xPower = x;
+        double power4 = 1;
+
+        for (int i = 0; i < 40; i++) {
+
+            result += factorial2n / (power4 * factorialn * factorialn * (2 * i + 1)) * xPower;
+            System.Console.WriteLine($"{i}: {result}");
+
+            xPower *= x * x;
+            factorialn *= i + 1;
+            factorial2n *= (2 * i + 1) * (2 * i + 2);
+            power4 *= 4;
+
+        }
+
+        return result;
+    }
+
+    ///<summary>
+    /// Uses MacLaurin series to calculate the arctan of x
+    ///</summary>
+    ///<param name ="x">The angle in radians</param>
+    ///<param name ="error">The desired aproximation error for the result</param>
+    public static double MacLaurinArctan(double x, double error) {
+        
+        if (x > 1 || x < -1) throw new ArgumentException("MacLaurin series for arctan(x) has a convergence interval of (1, -1)");
+        if (x == 1 || x == -1) return x * Math.PI / 4;
+        
+        double result = 0;
+        double xPower = x;
+
+        for (int i = 0; i < 40; i++) {
+
+            result += (1 - 2 * (i % 2)) * xPower / (2 * i + 1);
+            System.Console.WriteLine($"{i}: {result}");
+
+            xPower *= x * x;
+        }
+
+        return result;
     }
 
     static double FromZeroTo2Pi(double x) {
