@@ -2,12 +2,16 @@ namespace Calculator;
 
 public static class Calculate{
 
+    private static double _error;
+
     ///<summary>
     ///Parse and calculate a string
     ///</summary>
     ///<returns> The value of the expression in double </returns>
-    public static double CalculateInput(string input){
+    public static double CalculateInput(string input, double error){
         
+        _error = error;
+
         //Dictionary of constants, including numbers
         Dictionary<char, double> constants = new Dictionary<char, double>{
             {'0', 0}, {'1', 1}, {'2', 2}, {'3', 3}, {'4', 4}, {'5', 5}, {'6', 6}, {'7', 7}, {'8', 8}, {'9', 9},
@@ -26,8 +30,39 @@ public static class Calculate{
         string[] tokens = Tokenizer(input, constants, operators);
 
         ValidateBrackets(tokens);
+        tokens = NegativeParser(tokens, constants);
+        // Print(tokens);
         return Result(tokens, operators, constants);
     }
+
+    private static void Print(string[] tokens)
+    {
+        for (int i = 0; i < tokens.Length; i++)
+        {
+            System.Console.Write(tokens[i]);
+        }
+            System.Console.WriteLine();
+    }
+
+    private static string[] NegativeParser(string[] tokens, Dictionary<char, double> constants)
+    {
+        List<string> TempTokens = new List<string>();
+
+        for (int i = 0; i < tokens.Length; i++)
+        {
+            if(tokens[i] == "-"){
+                if(i!=0 && (double.TryParse(tokens[i-1], out double a) || tokens[i-1] == ")"|| constants.ContainsKey(tokens[i-1][0]))) TempTokens.Add("+"); 
+            
+                TempTokens.Add("("); TempTokens.Add("0"); TempTokens.Add("-");
+                TempTokens.Add("1"); TempTokens.Add(")"); TempTokens.Add("*");
+            }
+
+            else TempTokens.Add(tokens[i]);
+        }
+
+        return TempTokens.ToArray();
+    }
+
 
     //Verify if the brackets on the expression are valid
     private static void ValidateBrackets(string[] tokens)
@@ -130,7 +165,8 @@ public static class Calculate{
     //Return true if the previous operator has higher priority than the current operator
     private static bool hasPriority(string op1, string op2, Dictionary<string, int> operators)
     {
-        return operators[op1] >= operators[op2];
+        if(op2 == "(") return false;
+        return operators[op2] >= operators[op1];
     }
 
     public static double applyOp(string op, double b, double a = 0)
@@ -154,30 +190,30 @@ public static class Calculate{
                 return Math.Pow(b, 1/a);
             
             case "cos":
-                return Functions.Cos(b);
+                return Functions.Cos(b, _error);
             case "sen":
-                return Functions.Sen(b);
+                return Functions.Sen(b, _error);
             case "tan":
-                return Functions.Tan(b);
+                return Functions.Tan(b, _error);
             case "cot":
-                return Functions.Cot(b);
+                return Functions.Cot(b, _error);
             case "sec":
-                return Functions.Sec(b);
+                return Functions.Sec(b, _error);
             case "csc":
-                return Functions.Csc(b);
+                return Functions.Csc(b, _error);
 
             case "arccos":
-                return Functions.Arccos(b);
+                return Functions.Arccos(b, _error);
             case "arcsen":
-                return Functions.Arcsen(b);
+                return Functions.Arcsen(b, _error);
             case "arctan":
-                return Functions.Arctan(b);
+                return Functions.Arctan(b, _error);
             case "arccot":
-                return Functions.Arccot(b); 
+                return Functions.Arccot(b, _error); 
             case "arccsc":
-                return Functions.Arccsc(b);
+                return Functions.Arccsc(b, _error);
             case "arcsec":
-                return Functions.Arcsec(b);
+                return Functions.Arcsec(b, _error);
             
             default: return 0;
         }

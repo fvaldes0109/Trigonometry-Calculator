@@ -2,59 +2,57 @@ namespace Calculator;
 
 public static class Functions{
 
-    public static double Cos(double x)
+    public static double Cos(double x, double error)
     {
-        return Math.Cos(x);
+        return Aproximation.MacLaurinCos(x, error);
     }
 
-    public static double Sen(double x)
+    public static double Sen(double x, double error)
     {
-        return Math.Sin(x);
+        return Aproximation.MacLaurinSin(x, error);
     }
-    public static double Tan(double x)
+    public static double Tan(double x, double error)
     {
-        if (x == Math.PI/2) throw new Exception("Tan(p/2) is not defined");
-        return Math.Tan(x);
+        return Aproximation.MacLaurinSin(x, error) / Aproximation.MacLaurinCos(x, error);
     }
 
-    public static double Cot(double x)
+    public static double Cot(double x, double error)
     {
-        if(x == 0) throw new Exception("Cot(0) is not defined");
-        return 1/Math.Tan(x);
+        return Aproximation.MacLaurinCos(x, error) / Aproximation.MacLaurinSin(x, error);
     }
     
-    public static double Sec(double x)
+    public static double Sec(double x, double error)
     {
-        return 1/Math.Cos(x);
+        return 1 / Aproximation.MacLaurinCos(x, error);
     }
-    public static double Csc(double x)
+    public static double Csc(double x, double error)
     {
-        return 1/Math.Sin(x);
+        return 1 / Aproximation.MacLaurinSin(x, error);
     }
-    public static double Arcsen(double x)
+    public static double Arcsen(double x, double error)
     {
-        return Math.Asin(x);
+        return Aproximation.MacLaurinArcsin(x, error);
     }
-    public static double Arccos(double x)
+    public static double Arccos(double x, double error)
     {
-        return Math.Acos(x);
+        return Math.PI / 2 - Aproximation.MacLaurinArcsin(x, error);
     }
-    public static double Arcsec(double x)
+    public static double Arcsec(double x, double error)
     {
-        return Math.PI/2-Math.Asin(1/x);
+        return Math.PI / 2 - Aproximation.MacLaurinArcsin(1 / x, error);
     }
-    public static double Arccsc(double x)
+    public static double Arccsc(double x, double error)
     {
-        return Math.Asin(1/x);
+        return Aproximation.MacLaurinArcsin(1 / x, error);
     }
 
-    public static double Arctan(double x)
+    public static double Arctan(double x, double error)
     {
-        return Math.Atan(x);
+        return Aproximation.MacLaurinArctan(x, error);
     }
-    public static double Arccot(double x)
+    public static double Arccot(double x, double error)
     {
-        return Math.PI/2-Math.Atan(x);
+        return Math.PI / 2 - Aproximation.MacLaurinArctan(x, error);
     }
 
 }

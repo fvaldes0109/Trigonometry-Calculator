@@ -32,7 +32,7 @@ public static class Aproximation {
         for (int i = 0; i < 20; i++) {
 
             result += (1 - 2 * (i % 2)) * xPower / factorial;
-            System.Console.WriteLine($"{i}: {result} --- {factorial}");
+            // System.Console.WriteLine($"{i}: {result} --- {factorial}");
 
             xPower *= x * x;
             factorial *= (2 * i + 1) * (2 * i + 2);
@@ -71,7 +71,7 @@ public static class Aproximation {
         for (int i = 1; i < 20; i++) {
 
             result += (-1 + 2 * (i % 2)) * xPower / factorial;
-            System.Console.WriteLine($"{i}: {result} --- {factorial}");
+            // System.Console.WriteLine($"{i}: {result} --- {factorial}");
 
             xPower *= x * x;
             factorial *= (2 * i) * (2 * i + 1);
@@ -98,7 +98,7 @@ public static class Aproximation {
         for (int i = 0; i < 40; i++) {
 
             result += factorial2n / (power4 * factorialn * factorialn * (2 * i + 1)) * xPower;
-            System.Console.WriteLine($"{i}: {result}");
+            // System.Console.WriteLine($"{i}: {result}");
 
             xPower *= x * x;
             factorialn *= i + 1;
@@ -126,7 +126,7 @@ public static class Aproximation {
         for (int i = 0; i < 40; i++) {
 
             result += (1 - 2 * (i % 2)) * xPower / (2 * i + 1);
-            System.Console.WriteLine($"{i}: {result}");
+            // System.Console.WriteLine($"{i}: {result}");
 
             xPower *= x * x;
         }
