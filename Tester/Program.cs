@@ -4,4 +4,4 @@
 
 //System.Console.WriteLine(new Arccsc(new Constant(-4)).Evaluate(0.1));
 
-System.Console.WriteLine( Calculate.CalculateInput("cos(sen(0))^45") );
+System.Console.WriteLine( Calculate.CalculateInput("2.5 - 3.2") );

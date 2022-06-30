@@ -54,7 +54,11 @@ public static class Calculate{
             //If the current token is a number, add it to the stack
             if(!operators.ContainsKey(tokens[i]))
             {
+                if(tokens[i] == "e" || tokens[i] == "p")
                 Values.Push(constants[tokens[i][0]]);
+
+                else
+                Values.Push(double.Parse(tokens[i]));
             }
 
             else
@@ -199,7 +203,8 @@ public static class Calculate{
                 string number = "";
                 number += input[i];
 
-                while(input.Length > i+1 && constants.ContainsKey(input[i+1]) && input[i+1] != 'e' && input[i+1] != 'p'){
+                while( ((input.Length > i+1 && constants.ContainsKey(input[i+1]) && input[i+1] != 'e' && input[i+1] != 'p'))
+                        || (input.Length > i+1 && input[i+1] == '.')){
                     
                     i++;
                     number += input[i];
