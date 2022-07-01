@@ -95,7 +95,7 @@ public static class Aproximation {
         double xPower = x;
         double power4 = 1;
 
-        for (int i = 0; i < 40; i++) {
+        for (int i = 0; i < 50; i++) {
 
             result += factorial2n / (power4 * factorialn * factorialn * (2 * i + 1)) * xPower;
             // System.Console.WriteLine($"{i}: {result}");
@@ -111,13 +111,13 @@ public static class Aproximation {
     }
 
     ///<summary>
-    /// Uses MacLaurin series to calculate the arctan of x
+    /// Uses MacLaurin series to calculate the arccot of x
     ///</summary>
     ///<param name ="x">The angle in radians</param>
     ///<param name ="error">The desired aproximation error for the result</param>
-    public static double MacLaurinArctan(double x, double error) {
+    public static double MacLaurinArccot(double x, double error) {
         
-        if (x > 1 || x < -1) throw new ArgumentException("MacLaurin series for arctan(x) has a convergence interval of (1, -1)");
+        if (x > 1 || x < -1) throw new ArgumentException("MacLaurin series for arccot(x) has a convergence interval of (1, -1)");
         if (x == 1 || x == -1) return x * Math.PI / 4;
         
         double result = 0;
@@ -131,7 +131,7 @@ public static class Aproximation {
             xPower *= x * x;
         }
 
-        return result;
+        return Math.PI / 2 - result;
     }
 
     static double FromZeroTo2Pi(double x) {

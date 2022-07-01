@@ -48,11 +48,15 @@ public static class Functions{
 
     public static double Arctan(double x, double error)
     {
-        return Aproximation.MacLaurinArctan(x, error);
+        return Math.PI / 2 - Arccot(x, error);
     }
     public static double Arccot(double x, double error)
-    {
-        return Math.PI / 2 - Aproximation.MacLaurinArctan(x, error);
+    {   
+        if (x > -0.5 && x < 0.5) return Aproximation.MacLaurinArccot(x, error);
+        else {
+            double temp = Aproximation.MacLaurinArcsin(1 / Math.Sqrt(1 + x * x), error);
+            return (x < 0 ? Math.PI - temp : temp);
+        }
     }
 
 }
