@@ -22,7 +22,7 @@ public static class Calculate{
         Dictionary<string, int> operators = new Dictionary<string, int>{
             {"+", 1} , {"-", 1}, 
             {"*", 2},  {"/", 2}, 
-            {"^", 3}, {"root", 3},
+            {"^", 3},
             {"cos", 4}, {"sen", 4}, {"cot", 4}, {"tan", 4},  {"csc", 4}, {"sec", 4},
             {"arccos", 4}, {"arcsen", 4}, {"arccot", 4}, {"arctan", 4}, {"arccsc", 4}, {"arcsec", 4},
             {"(", 5}, {")", 5} };
@@ -186,8 +186,6 @@ public static class Calculate{
             
             case "^":
                 return Math.Pow(a, b);
-            case "root":
-                return Math.Pow(b, 1/a);
             
             case "cos":
                 return Functions.Cos(b, _error);
@@ -255,11 +253,6 @@ public static class Calculate{
             else if(operators.ContainsKey(input.Substring(i, 3))){
                 tokens.Add(input.Substring(i, 3));
                 i += 2;
-            }
-
-            else if(operators.ContainsKey(input.Substring(i, 4))){
-                tokens.Add(input.Substring(i, 3));
-                i += 3;
             }
 
 
