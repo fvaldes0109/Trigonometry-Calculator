@@ -101,7 +101,7 @@ public static class Aproximation {
     ///</summary>
     ///<param name ="x">The angle in radians</param>
     ///<param name ="error">The desired aproximation error for the result</param>
-    public static double MacLaurinArcsin(double x, double error) {
+    public static double MacLaurinArcsen(double x, double error) {
         
         if (error <= 0) throw new ArgumentException("Error must be greater than 0");
         if (x == 1 || x == -1) return x * Math.PI / 2;
