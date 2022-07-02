@@ -32,7 +32,7 @@ public static class Calculate{
         ValidateBrackets(tokens);
         tokens = NegativeParser(tokens, constants);
         // Print(tokens);
-        return Result(tokens, operators, constants);
+        return Aproximation.Round(Result(tokens, operators, constants), error);
     }
 
     private static void Print(string[] tokens)

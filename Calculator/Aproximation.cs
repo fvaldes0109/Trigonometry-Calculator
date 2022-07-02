@@ -9,6 +9,8 @@ public static class Aproximation {
     ///<param name ="error">The desired aproximation error for the result</param>
     public static double MacLaurinCos(double x, double error) {
 
+        if (error <= 0) throw new ArgumentException("Error must be greater than 0");
+
         x = FromZeroTo2Pi(x); // Moving x to the interval [0, 2pi]
         double finalSign = 1;
 
@@ -28,14 +30,20 @@ public static class Aproximation {
         double result = 0;
         double factorial = 1;
         double xPower = 1;
+        double currentValue = 0;
 
-        for (int i = 0; i < 20; i++) {
+        int i = 0;
+        while (true) {
 
-            result += (1 - 2 * (i % 2)) * xPower / factorial;
-            // System.Console.WriteLine($"{i}: {result} --- {factorial}");
+            double term = (1 - 2 * (i % 2)) * xPower / factorial;
+            result += term;
+            
+            if (CheckError(ref result, currentValue, term, error)) break;
+            else currentValue = result;
 
             xPower *= x * x;
             factorial *= (2 * i + 1) * (2 * i + 2);
+            i++;
         }
 
         return result * finalSign;
@@ -47,6 +55,8 @@ public static class Aproximation {
     ///<param name ="x">The angle in radians</param>
     ///<param name ="error">The desired aproximation error for the result</param>
     public static double MacLaurinSin(double x, double error) {
+
+        if (error <= 0) throw new ArgumentException("Error must be greater than 0");
 
         x = FromZeroTo2Pi(x); // Moving x to the interval [0, 2pi]
         double finalSign = 1;
@@ -67,14 +77,20 @@ public static class Aproximation {
         double result = 0;
         double factorial = 1;
         double xPower = x;
+        double currentValue = 0;
 
-        for (int i = 1; i < 20; i++) {
+        int i = 1;
+        while (true) {
 
-            result += (-1 + 2 * (i % 2)) * xPower / factorial;
-            // System.Console.WriteLine($"{i}: {result} --- {factorial}");
+            double term = (-1 + 2 * (i % 2)) * xPower / factorial;
+            result += term;
+
+            if (CheckError(ref result, currentValue, term, error)) break;
+            else currentValue = result;
 
             xPower *= x * x;
             factorial *= (2 * i) * (2 * i + 1);
+            i++;
         }
 
         return result * finalSign;
@@ -86,7 +102,8 @@ public static class Aproximation {
     ///<param name ="x">The angle in radians</param>
     ///<param name ="error">The desired aproximation error for the result</param>
     public static double MacLaurinArcsin(double x, double error) {
-
+        
+        if (error <= 0) throw new ArgumentException("Error must be greater than 0");
         if (x == 1 || x == -1) return x * Math.PI / 2;
 
         double result = 0;
@@ -94,17 +111,22 @@ public static class Aproximation {
         double factorialn = 1;
         double xPower = x;
         double power4 = 1;
+        double currentValue = 0;
 
-        for (int i = 0; i < 50; i++) {
+        int i = 0;
+        while (true) {
 
-            result += factorial2n / (power4 * factorialn * factorialn * (2 * i + 1)) * xPower;
-            // System.Console.WriteLine($"{i}: {result}");
+            double term = factorial2n / (power4 * factorialn * factorialn * (2 * i + 1)) * xPower;
+            result += term;
+
+            if (CheckError(ref result, currentValue, term, error)) break;
+            else currentValue = result;
 
             xPower *= x * x;
             factorialn *= i + 1;
             factorial2n *= (2 * i + 1) * (2 * i + 2);
             power4 *= 4;
-
+            i++;
         }
 
         return result;
@@ -117,21 +139,28 @@ public static class Aproximation {
     ///<param name ="error">The desired aproximation error for the result</param>
     public static double MacLaurinArccot(double x, double error) {
         
+        if (error <= 0) throw new ArgumentException("Error must be greater than 0");
         if (x > 1 || x < -1) throw new ArgumentException("MacLaurin series for arccot(x) has a convergence interval of (1, -1)");
         if (x == 1 || x == -1) return x * Math.PI / 4;
         
         double result = 0;
         double xPower = x;
+        double currentValue = 0;
 
-        for (int i = 0; i < 40; i++) {
+        int i = 0;
+        while (true) {
+        
+            double term = (1 - 2 * (i % 2)) * xPower / (2 * i + 1);
+            result += term;
 
-            result += (1 - 2 * (i % 2)) * xPower / (2 * i + 1);
-            // System.Console.WriteLine($"{i}: {result}");
+            if (CheckError(ref result, currentValue, term, error)) break;
+            else currentValue = result;
 
             xPower *= x * x;
+            i++;
         }
 
-        return Math.PI / 2 - result;
+        return Round(Math.PI / 2 - result, error);
     }
 
     static double FromZeroTo2Pi(double x) {
@@ -145,5 +174,40 @@ public static class Aproximation {
         }
 
         return x;
+    }
+
+    public static double Round(double numb, double error)
+    {
+        int count = 0;
+        
+        while(error < 1)
+        {   
+            error *= 10;
+            count++;
+        }
+
+        double rounded = Math.Round(numb, count);
+
+        return (rounded == -0 ? 0 : rounded);
+    }
+
+    ///<summary>
+    /// Checks if the given error has been reached. If it was, rounds the current value
+    ///</summary>
+    private static bool CheckError(ref double current, double previous, double term, double error) {
+
+        if (double.IsNaN(current)) {
+            System.Console.WriteLine("No se pudo alcanzar el error deseado. Error alcanzado: " + term);
+            current = previous;
+            return true;
+        }
+
+        // The result will be rounded with one extra decimal place, in order to give more accuracy 
+        // while calculating a large expression
+        if (Math.Abs(term) <= error / (double)10) {
+            current = Round(current, error / (double)10);
+            return true;
+        }
+        return false;
     }
 }
