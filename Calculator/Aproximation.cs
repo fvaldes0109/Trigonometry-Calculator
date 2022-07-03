@@ -160,7 +160,7 @@ public static class Aproximation {
             i++;
         }
 
-        return Round(Math.PI / 2 - result, error);
+        return Round(Math.PI / 2 - result, error /(double)10);
     }
 
     static double FromZeroTo2Pi(double x) {
