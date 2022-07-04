@@ -42,7 +42,7 @@ Las funciones trigonométricas pueden ser expresadas en función del seno y el c
 
 **Serie de MacLaurin:**
 
-## f(x) = f(0) + f'(0)x + $\frac{f''(0)}{2!}x^2$ + ... + $\frac{f^{(n)}(0)}{n!}x^n$ + ... = $\sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!}x^n$
+## $f(x) = f(0) + f'(0)x + \frac{f''(0)}{2!}x^2 + ... + \frac{f^{(n)}(0)}{n!}x^n + ... = \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!}x^n$
 
 ## Aproximation
 
